@@ -20,6 +20,8 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    // Garantir que React seja resolvido corretamente
+    dedupe: ['react', 'react-dom'],
   },
   build: {
     // Garantir que os chunks sejam carregados na ordem correta
