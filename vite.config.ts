@@ -22,6 +22,11 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    // Garantir que os chunks sejam carregados na ordem correta
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true,
+    },
     // Otimizações de build
     rollupOptions: {
       output: {
@@ -39,19 +44,7 @@ export default defineConfig(({ mode }) => ({
           }
           return 'assets/[name]-[hash][extname]';
         },
-        // Code splitting inteligente
-        manualChunks: (id) => {
-          // Separar node_modules grandes
-          if (id.includes('node_modules')) {
-            if (id.includes('@radix-ui')) {
-              return 'vendor-radix';
-            }
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'vendor-react';
-            }
-            return 'vendor';
-          }
-        }
+        // Deixar o Vite fazer code splitting automático para evitar problemas de ordem
       }
     },
     // Comprimir assets pequenos inline
