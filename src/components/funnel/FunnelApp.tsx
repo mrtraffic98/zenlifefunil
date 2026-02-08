@@ -1,8 +1,9 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
 import { UserData, initialUserData } from "@/types/funnel";
 import { ProgressBar } from "./ProgressBar";
 import { ContinueButton } from "./ContinueButton";
+import { FunnelService } from "@/lib/funnelService";
 
 // Import all steps
 import { WelcomeStep } from "./steps/WelcomeStep";
@@ -49,14 +50,38 @@ export const FunnelApp = () => {
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState<UserData>(initialUserData);
   const [isLoading, setIsLoading] = useState(false);
+  const [responseId, setResponseId] = useState<string | null>(null);
 
   const updateUserData = useCallback((data: Partial<UserData>) => {
     setUserData((prev) => ({ ...prev, ...data }));
   }, []);
 
+  // Função para salvar progresso no Supabase
+  const saveProgress = useCallback(async (currentStep: number) => {
+    try {
+      const result = await FunnelService.saveProgress(
+        userData,
+        currentStep,
+        undefined, // userId - pode ser obtido do auth depois
+        responseId || undefined
+      );
+      
+      if (result.success && result.id) {
+        setResponseId(result.id);
+      } else if (result.error) {
+        console.warn('Error saving progress:', result.error);
+      }
+    } catch (error) {
+      console.error('Exception saving progress:', error);
+    }
+  }, [userData, responseId]);
+
   const nextStep = () => {
     if (step < TOTAL_STEPS) {
-      setStep((prev) => prev + 1);
+      const newStep = step + 1;
+      setStep(newStep);
+      // Salvar progresso após mudar de step
+      saveProgress(newStep);
     }
   };
 
@@ -106,6 +131,28 @@ export const FunnelApp = () => {
     setIsLoading(false);
     nextStep();
   };
+
+  // Salvar resposta completa quando chegar no step final
+  useEffect(() => {
+    if (step === 37) { // OfferStep - final step
+      FunnelService.saveFunnelResponse(userData, undefined, responseId || undefined)
+        .then(result => {
+          if (result.success && result.id) {
+            setResponseId(result.id);
+            console.log('Funnel response saved successfully:', result.id);
+          } else if (result.error) {
+            console.error('Error saving final response:', result.error);
+          }
+        });
+    }
+  }, [step, userData, responseId]);
+
+  // Salvar progresso inicial quando selecionar idade
+  useEffect(() => {
+    if (step === 2 && userData.ageRange) {
+      saveProgress(2);
+    }
+  }, [step, userData.ageRange, saveProgress]);
 
   const renderStep = () => {
     switch (step) {

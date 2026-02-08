@@ -7,14 +7,165 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.1"
   }
   public: {
     Tables: {
-      [_ in never]: never
+      users: {
+        Row: {
+          id: string
+          email: string | null
+          phone: string | null
+          name: string | null
+          age_range: '18-29' | '30-39' | '40-49' | '50+' | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          email?: string | null
+          phone?: string | null
+          name?: string | null
+          age_range?: '18-29' | '30-39' | '40-49' | '50+' | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string | null
+          phone?: string | null
+          name?: string | null
+          age_range?: '18-29' | '30-39' | '40-49' | '50+' | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      funnel_responses: {
+        Row: {
+          id: string
+          user_id: string | null
+          name: string | null
+          age_range: string | null
+          height: number | null
+          current_weight: number | null
+          target_weight: number | null
+          body_type: string | null
+          goal_body_type: string | null
+          knows_pilates: boolean | null
+          main_goals: Json
+          target_areas: Json
+          weight_difficulty: string | null
+          last_satisfied: string | null
+          life_events: Json
+          physical_pains: Json
+          activity_level: string | null
+          daily_routine: string | null
+          daily_walking: string | null
+          stairs_breathing: string | null
+          flexibility: string | null
+          sleep_hours: string | null
+          energy_level: string | null
+          hydration: string | null
+          healthy_eating: string | null
+          after_eating_feeling: string | null
+          bad_habits: Json
+          food_habits: Json
+          workout_time: string | null
+          workout_days: string | null
+          bmi: number | null
+          bmi_category: string | null
+          metabolism_type: string | null
+          weight_to_lose: number | null
+          estimated_months: number | null
+          completed_at: string | null
+          current_step: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          name?: string | null
+          age_range?: string | null
+          height?: number | null
+          current_weight?: number | null
+          target_weight?: number | null
+          body_type?: string | null
+          goal_body_type?: string | null
+          knows_pilates?: boolean | null
+          main_goals?: Json
+          target_areas?: Json
+          weight_difficulty?: string | null
+          last_satisfied?: string | null
+          life_events?: Json
+          physical_pains?: Json
+          activity_level?: string | null
+          daily_routine?: string | null
+          daily_walking?: string | null
+          stairs_breathing?: string | null
+          flexibility?: string | null
+          sleep_hours?: string | null
+          energy_level?: string | null
+          hydration?: string | null
+          healthy_eating?: string | null
+          after_eating_feeling?: string | null
+          bad_habits?: Json
+          food_habits?: Json
+          workout_time?: string | null
+          workout_days?: string | null
+          bmi?: number | null
+          bmi_category?: string | null
+          metabolism_type?: string | null
+          weight_to_lose?: number | null
+          estimated_months?: number | null
+          completed_at?: string | null
+          current_step?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          name?: string | null
+          age_range?: string | null
+          height?: number | null
+          current_weight?: number | null
+          target_weight?: number | null
+          body_type?: string | null
+          goal_body_type?: string | null
+          knows_pilates?: boolean | null
+          main_goals?: Json
+          target_areas?: Json
+          weight_difficulty?: string | null
+          last_satisfied?: string | null
+          life_events?: Json
+          physical_pains?: Json
+          activity_level?: string | null
+          daily_routine?: string | null
+          daily_walking?: string | null
+          stairs_breathing?: string | null
+          flexibility?: string | null
+          sleep_hours?: string | null
+          energy_level?: string | null
+          hydration?: string | null
+          healthy_eating?: string | null
+          after_eating_feeling?: string | null
+          bad_habits?: Json
+          food_habits?: Json
+          workout_time?: string | null
+          workout_days?: string | null
+          bmi?: number | null
+          bmi_category?: string | null
+          metabolism_type?: string | null
+          weight_to_lose?: number | null
+          estimated_months?: number | null
+          completed_at?: string | null
+          current_step?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
